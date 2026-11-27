@@ -66,99 +66,82 @@ namespace UrHajosJatek
         }
 
 
-        static void AnyahajoMozgat()
-        {
-            Console.CursorVisible = false;
-            while (true)
-            {
-                char beolvasas = Console.ReadKey(true).KeyChar;
-                if (beolvasas == 'a')
-                {
-                    if (jatekosHely > 0)
-                    {
-                        jatekosHely--;
-                    }
-                }
-                else if (beolvasas == 'd')
-                {
-                    if (jatekosHely < oszlop - 1)
-                    {
-                        jatekosHely++;
-                    }
-                }
-                AnyahajoKirajzol();
-            }
-        }
-
 
 
 
         static void EllensegMozgat()
         {
             Stopwatch ora = Stopwatch.StartNew();
+            Console.CursorVisible = false;
 
             long utolsoGyorsEsemeny = 0;
             long utolsoLassuEsemeny = 0;
 
-            const int gyorsKozMs = 250;
+            const int gyorsKozMs = 500;
             const int lassuKozMs = 1000;
 
-            while (ora.ElapsedMilliseconds < 3000)
+            while (ora.ElapsedMilliseconds < 10000 )
             {
                 long most = ora.ElapsedMilliseconds;
+                if (Console.KeyAvailable)
+                {
+                    char billentyu = Console.ReadKey(true).KeyChar;
 
+                    if (billentyu == 'a' && jatekosHely > 0)
+                    {
+                        jatekosHely--;
+                    }
+                    else if (billentyu == 'd' && jatekosHely < oszlop - 1)
+                    {
+                        jatekosHely++;
+                    }
+                    AnyahajoKirajzol();
+                }
                 if (most - utolsoGyorsEsemeny >= gyorsKozMs)
                 {
-                    Console.Write(".");
+                    for (int i = palya.GetLength(0) - 2; i >= 0; i--)
+                    {
+                        for (int j = 0; j < palya.GetLength(1); j++)
+                        {
+                            if (palya[i, j] == ellenseg)
+                            {
+                                if (i + 1 == sor - 1)
+                                {
+                                    jatekVege = true;
+                                }
+                                else
+                                {
+                                    palya[i + 1, j] = ellenseg;
+                                    palya[i, j] = ures;
+                                }
+                            }
+                        }
+                    }
+                    PalyaKirajzol();
                     utolsoGyorsEsemeny = most;
                 }
-
                 if (most - utolsoLassuEsemeny >= lassuKozMs)
                 {
-                    Console.Write(" [1 mp] ");
                     utolsoLassuEsemeny = most;
                 }
 
             }
+            
+           
         }
 
 
-
-
-            //static void Lovesek()
-            //{
-
-            //    Console.CursorVisible = true;
-            //    while (true)
-            //    {
-            //        Console.SetCursorPosition(anyahajo, sor + 1);
-
-            //        char beolvasas2 = Console.ReadLine()[0];
-            //        Console.SetCursorPosition(0, oszlop + 1);
-            //        Console.WriteLine(" ");
-            //        if (beolvasas2 == 'w')
-            //        {
-            //            oszlop++;
-            //        }
-            //    }
-            //}
+       
 
 
 
 
 
-
-
-
-
-
-            static void Main(string[] args)
+        static void Main(string[] args)
             {
                 AlapHelyzet();
                 PalyaKirajzol();
                 EllensegMozgat();
-                AnyahajoMozgat();
-
                 Console.Clear();
                 Console.WriteLine("==================================");
                 Console.WriteLine("           JÁTÉK VÉGE!            ");
