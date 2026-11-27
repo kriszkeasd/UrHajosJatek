@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 namespace UrHajosJatek
 {
     internal class Program
@@ -34,6 +35,9 @@ namespace UrHajosJatek
                 }
             }
         }
+        
+            
+         
 
         static void PalyaKirajzol()
         {
@@ -67,8 +71,6 @@ namespace UrHajosJatek
 
 
 
-
-
         static void EllensegMozgat()
         {
             Stopwatch ora = Stopwatch.StartNew();
@@ -82,6 +84,22 @@ namespace UrHajosJatek
 
             while (ora.ElapsedMilliseconds < 10000 )
             {
+                for (int i = 0; i < oszlop / 10; i++)
+                {
+                    int index = r.Next(1, 39);
+                    palya[0, index] = ellenseg;
+                }
+                for (int i = 0; i < sor; i++)
+                {
+                    for (int j = 0; j < oszlop; j++)
+                    {
+                        if (palya[i, j] != ellenseg)
+                        {
+                            palya[i, j] = ures;
+                        }
+                    }
+                }
+
                 long most = ora.ElapsedMilliseconds;
                 if (Console.KeyAvailable)
                 {
@@ -96,6 +114,8 @@ namespace UrHajosJatek
                         jatekosHely++;
                     }
                     AnyahajoKirajzol();
+
+                    
                 }
                 if (most - utolsoGyorsEsemeny >= gyorsKozMs)
                 {
@@ -117,8 +137,8 @@ namespace UrHajosJatek
                             }
                         }
                     }
-                    PalyaKirajzol();
-                    utolsoGyorsEsemeny = most;
+                PalyaKirajzol();
+                utolsoGyorsEsemeny = most;
                 }
                 if (most - utolsoLassuEsemeny >= lassuKozMs)
                 {
@@ -130,18 +150,27 @@ namespace UrHajosJatek
            
         }
 
+        static void Lovedek()
+        {
+            char billentyu = Console.ReadKey(true).KeyChar;
 
-       
+            
+        }
 
 
 
 
 
-        static void Main(string[] args)
+
+
+
+
+                static void Main(string[] args)
             {
                 AlapHelyzet();
                 PalyaKirajzol();
-                EllensegMozgat();
+                EllensegMozgat(); 
+                Lovedek();
                 Console.Clear();
                 Console.WriteLine("==================================");
                 Console.WriteLine("           JÁTÉK VÉGE!            ");
